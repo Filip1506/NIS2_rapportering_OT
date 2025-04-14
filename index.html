@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="UTF-8">
+    <title>OT-hændelse – Afsluttet rapportering</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+
+<body>
+
+    <form>
+        <h2>📡 Rapportering af afsluttet hændelse – OT-overvågning</h2>
+        <p>Formularen anvendes til at registrere afsluttede hændelser, hvor overvågningen (f.eks. SCADA) har været nede
+            eller fejlfungerende.</p>
+
+        <fieldset>
+            <legend>1. Hvornår og hvor skete det?</legend>
+            <label>Tidspunkt hvor overvågningen fejlede</label>
+            <input type="text" id="incident_start" class="datetimepicker">
+
+            <label>Tidspunkt hvor overvågningen blev genetableret</label>
+            <input type="text" id="incident_end" class="datetimepicker">
+
+            <label>Geografisk område / anlæg</label>
+            <input type="text" name="location" placeholder="Fx: Hobro station, Nord-nettet">
+        </fieldset>
+
+        <fieldset>
+            <legend>2. Hvad skete der?</legend>
+            <label>Kort beskrivelse af hændelsen</label>
+            <textarea name="incident_description" rows="3"
+                placeholder="Fx: SCADA rapporterede ingen data fra Hobro i 2 timer."></textarea>
+
+            <label>Berørte systemer eller komponenter</label>
+            <input type="text" name="systems_affected" placeholder="Fx: SCADA, RTU, sensorer, netværksswitch">
+
+            <label>Årsag til hændelsen</label>
+            <input type="text" name="incident_cause"
+                placeholder="Fx: Strømafbrydelse, konfigurationsfejl, fysisk skade">
+
+            <label>Hændelsens konsekvensniveau</label>
+            <select name="severity_level">
+                <option>Lav</option>
+                <option>Mellem</option>
+                <option>Høj (kritisk påvirkning)</option>
+            </select>
+        </fieldset>
+
+        <fieldset>
+            <legend>3. Konsekvens og afhjælpning</legend>
+            <label>Hvordan blev fejlen løst?</label>
+            <textarea name="solution" rows="3"
+                placeholder="Fx: Genstartet lokalt, kabel udskiftet, konfiguration rullet tilbage."></textarea>
+
+            <label>Var andre aktører involveret?</label>
+            <input type="text" name="actors_involved" placeholder="Fx: Beredskab, eksterne teknikere, driftsteam">
+
+            <label>Er der behov for opfølgning eller læring?</label>
+            <textarea name="follow_up" rows="2"
+                placeholder="Fx: Skal ind i beredskabsplan. Mulig forebyggelse via alarm."></textarea>
+        </fieldset>
+
+        <fieldset>
+            <legend>4. Dokumentation</legend>
+            <label>Vedhæft relevante filer (valgfrit)</label>
+            <input type="file" name="attachments" multiple>
+        </fieldset>
+
+        <input type="submit" value="Indsend rapport">
+    </form>
+
+    <!-- Flatpickr & script -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/da.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
