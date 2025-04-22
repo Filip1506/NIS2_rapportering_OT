@@ -1,3 +1,10 @@
+/*
+  ✅ Forbedringer i dette stylesheet:
+  - "ingen filer valgt" fjernes automatisk, når der vælges en fil
+  - Kun knappen er klikbar, ikke hele input feltet
+  - Dropdown-menu med ".menu-toggle" ikon
+*/
+
 body {
     font-family: 'Arial', sans-serif;
     background: #f2f4f8;
@@ -205,4 +212,101 @@ button:hover {
     font-size: 14px;
     padding: 4px;
     height: auto;
+}
+
+/* Filinput */
+input[type="file"] {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    border: none;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    background: none;
+    color: transparent;
+}
+
+input[type="file"]::file-selector-button {
+    background-color: #00778c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #005e70;
+}
+
+/* Filvisning */
+.file-preview {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.file-preview ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    background: #f5f5f5;
+    padding: 6px 10px;
+    border-radius: 6px;
+    position: relative;
+}
+
+.file-actions {
+    position: relative;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    color: #666;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    padding: 4px 0;
+    min-width: 80px;
+}
+
+.menu button {
+    background: none;
+    border: none;
+    width: 100%;
+    padding: 6px 12px;
+    text-align: left;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: #333;
+}
+
+.menu button:hover {
+    background-color: #f0f0f0;
+}
+
+.menu.show {
+    display: block;
 }

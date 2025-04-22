@@ -10,7 +10,6 @@
 </head>
 
 <body>
-
     <form id="reportForm">
         <div class="internal-header">
             <h2>NIS2 Hændelsesrapportering</h2>
@@ -38,13 +37,14 @@
             </div>
         </div>
 
+        <!-- Fase 1 -->
         <fieldset id="fase1">
             <legend>Fase 1: Hurtig rapportering</legend>
             <label for="responsible">Navn på rapporteringsansvarlig</label>
-            <input type="text" id="responsible" />
+            <input type="text" id="responsible">
 
             <label for="discovery_time">Tidspunkt for opdagelse</label>
-            <input type="text" id="discovery_time" class="datetimepicker" placeholder="Vælg dato og tid" />
+            <input type="text" id="discovery_time" class="datetimepicker" placeholder="Vælg dato og tid">
 
             <label for="description">Kort beskrivelse af hændelsen</label>
             <textarea id="description" placeholder="Hvad er sket?"></textarea>
@@ -63,63 +63,58 @@
                 <option>Nej</option>
             </select>
 
+            <label for="attachment1">Vedhæft dokumentation</label>
+            <input type="file" id="attachment1" name="attachment1" multiple>
+            <div id="fileList-fase1" class="file-preview"></div>
+
             <button type="button" onclick="confirmSubmission('fase1')">Indsend Fase 1</button>
         </fieldset>
 
+        <!-- Fase 2 -->
         <fieldset id="fase2" style="display:none">
             <legend>Fase 2: Detaljeret rapport <span id="showDeadline72" class="deadline-note"></span></legend>
 
-            <label for="start">Starttidspunkt</label>
-            <input type="text" class="datetimepicker" id="start" placeholder="Start" />
+            <label>Start og slut tidspunkt</label>
+            <input type="text" class="datetimepicker" placeholder="Start">
+            <input type="text" class="datetimepicker" placeholder="Slut">
 
-            <label for="end">Sluttidspunkt</label>
-            <input type="text" class="datetimepicker" id="end" placeholder="Slut" />
+            <label>Systemer eller tjenester</label>
+            <input type="text">
 
-            <label>Påvirkede systemer eller tjenester</label>
-            <input type="text" />
+            <label>Teknisk årsag</label>
+            <input type="text">
 
-            <label>Teknisk årsag (hvis kendt)</label>
-            <input type="text" />
-
-            <label>Afhjælpende tiltag foretaget</label>
+            <label>Afhjælpende tiltag</label>
             <textarea></textarea>
 
-            <label for="threat_type">Trusselstype</label>
-            <select id="threat_type">
-                <option value="">Vælg trusselstype</option>
-                <option>Teknisk fejl</option>
-                <option>Menneskelig fejl</option>
-                <option>Ondsindet aktivitet</option>
-                <option>Sårbarhedsudnyttelse</option>
-                <option>Leverandørfejl / tredjepart</option>
-                <option>Fysisk hændelse</option>
-                <option>Ingen overvågning</option>
-                <option>Andet (uddybes)</option>
-            </select>
-
-            <label for="threat_description">Hvis andet, beskriv nærmere</label>
-            <textarea id="threat_description" placeholder="Beskrivelse af trusselstypen (valgfrit)"></textarea>
+            <label for="attachment2">Vedhæft dokumentation</label>
+            <input type="file" id="attachment2" name="attachment2" multiple>
+            <div id="fileList-fase2" class="file-preview"></div>
 
             <button type="button" onclick="confirmSubmission('fase2')">Indsend Fase 2</button>
         </fieldset>
 
+        <!-- Fase 3 -->
         <fieldset id="fase3" style="display:none">
             <legend>Fase 3: Endelig rapport <span id="showDeadlineFinal" class="deadline-note"></span></legend>
 
             <label>Afsluttende vurdering</label>
             <textarea></textarea>
 
-            <label>Eventuelle varige konsekvenser</label>
+            <label>Varige konsekvenser</label>
             <textarea></textarea>
 
-            <label>Eventuel opfølgning (valgfrit)</label>
+            <label>Opfølgning</label>
             <textarea></textarea>
+
+            <label for="attachment3">Vedhæft dokumentation</label>
+            <input type="file" id="attachment3" name="attachment3" multiple>
+            <div id="fileList-fase3" class="file-preview"></div>
 
             <button type="button" onclick="confirmSubmission('fase3')">Indsend Fase 3</button>
         </fieldset>
     </form>
 
-    <!-- Bekræftelses-popup -->
     <div id="confirmationModal" class="modal">
         <div class="modal-content">
             <h3>Bekræft indsendelse</h3>
@@ -129,7 +124,6 @@
         </div>
     </div>
 
-    <!-- Oversigts-popup -->
     <div id="summaryModal" class="modal">
         <div class="modal-content">
             <div id="summaryContent"></div>

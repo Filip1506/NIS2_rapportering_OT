@@ -1,6 +1,19 @@
+// NIS2 rapportering - forbedret file preview med burger-menu der bevares efter klik
+
 let currentFase = "fase1";
 let submitted = {};
 
+// Gemte filer pr. fase
+let uploadedFiles = {
+    fase1: [],
+    fase2: [],
+    fase3: []
+};
+
+// Bruges til at huske hvilken menu der skal forblive åben efter DOM opdatering
+let openMenu = null;
+
+// Initialiser Flatpickr
 flatpickr(".datetimepicker", {
     enableTime: true,
     time_24hr: true,
@@ -13,6 +26,81 @@ flatpickr(".datetimepicker", {
         }
     }
 });
+
+// Knyt inputfelter til preview
+handleFileInput("fase1", document.getElementById("attachment1"));
+handleFileInput("fase2", document.getElementById("attachment2"));
+handleFileInput("fase3", document.getElementById("attachment3"));
+
+function handleFileInput(faseId, inputElement) {
+    inputElement.addEventListener("change", function (e) {
+        uploadedFiles[faseId] = uploadedFiles[faseId].concat(Array.from(e.target.files));
+        e.target.value = "";
+        updateFileListPreview(faseId);
+    });
+}
+
+function updateFileListPreview(faseId) {
+    const container = document.getElementById(`fileList-${faseId}`);
+    const files = uploadedFiles[faseId];
+    if (!container || !files) return;
+
+    if (files.length === 0) {
+        container.innerHTML = "<p>Ingen filer valgt.</p>";
+        return;
+    }
+
+    let html = "<ul>";
+    files.forEach((file, index) => {
+        html += `
+            <li class="file-item">
+                ${file.name}
+                <div class="file-actions">
+                    <button class="menu-toggle" onclick="toggleMenu('${faseId}', ${index}, event)">⋮</button>
+                    <div class="menu" id="menu-${faseId}-${index}">
+                        <button onclick="removeFile('${faseId}', ${index})">🗑 Fjern</button>
+                    </div>
+                </div>
+            </li>`;
+    });
+    html += "</ul>";
+    container.innerHTML = html;
+
+    // Vis menu igen efter DOM re-render
+    if (openMenu) {
+        const menu = document.getElementById(`menu-${openMenu.faseId}-${openMenu.index}`);
+        if (menu) {
+            setTimeout(() => {
+                menu.classList.add("show");
+            }, 10);
+        }
+        openMenu = null;
+    }
+}
+
+function toggleMenu(faseId, index, event) {
+    event.stopPropagation();
+    const menu = document.getElementById(`menu-${faseId}-${index}`);
+    const isShown = menu.classList.contains("show");
+
+    document.querySelectorAll(".menu").forEach(m => m.classList.remove("show"));
+
+    if (!isShown) {
+        openMenu = { faseId, index };
+        updateFileListPreview(faseId);
+    } else {
+        openMenu = null;
+    }
+}
+
+document.addEventListener("click", function () {
+    document.querySelectorAll(".menu").forEach(m => m.classList.remove("show"));
+});
+
+function removeFile(faseId, index) {
+    uploadedFiles[faseId].splice(index, 1);
+    updateFileListPreview(faseId);
+}
 
 function goToFase(faseId) {
     const faser = ["fase1", "fase2", "fase3"];
@@ -61,15 +149,27 @@ function confirmSubmission(faseId) {
     const form = document.getElementById("reportForm");
     const inputs = form.querySelectorAll(`#${faseId} input, #${faseId} select, #${faseId} textarea`);
     const container = document.getElementById("confirmationSummary");
-
     let summary = "<ul>";
-    inputs.forEach(input => {
-        const label = input.previousElementSibling ? input.previousElementSibling.innerText : input.name;
-        const value = input.value || "-";
-        summary += `<li><strong>${label}</strong>: ${value}</li>`;
-    });
-    summary += "</ul>";
 
+    inputs.forEach(input => {
+        if (input.type !== "file") {
+            const label = input.previousElementSibling ? input.previousElementSibling.innerText : input.name;
+            const value = input.value || "-";
+            summary += `<li><strong>${label}</strong>: ${value}</li>`;
+        }
+    });
+
+    const files = uploadedFiles[faseId];
+    if (files && files.length > 0) {
+        summary += `<li><strong>Vedhæftede filer:</strong><div class='file-link-list'>`;
+        files.forEach(file => {
+            const url = URL.createObjectURL(file);
+            summary += `<a href="${url}" target="_blank">${file.name}</a><br>`;
+        });
+        summary += `</div></li>`;
+    }
+
+    summary += "</ul>";
     container.innerHTML = summary;
     document.getElementById("confirmationModal").style.display = "flex";
 }
@@ -88,7 +188,7 @@ function lockInputs(faseId) {
     const elements = form.querySelectorAll(`#${faseId} input, #${faseId} select, #${faseId} textarea`);
     elements.forEach(el => {
         if (el.tagName.toLowerCase() === "select") el.disabled = true;
-        else el.readOnly = true;
+        else if (el.type !== "file") el.readOnly = true;
     });
     submitted[faseId] = true;
 }
@@ -124,14 +224,27 @@ function showSummaryIfSubmitted(faseId) {
 
     let summary = `<h4>Indsendt information for ${faseId.replace("fase", "Fase ")}</h4><ul>`;
     inputs.forEach(input => {
-        const label = input.previousElementSibling ? input.previousElementSibling.innerText : input.name;
-        const value = input.value || "-";
-        summary += `<li><strong>${label}</strong>: ${value}</li>`;
+        if (input.type !== "file") {
+            const label = input.previousElementSibling ? input.previousElementSibling.innerText : input.name;
+            const value = input.value || "-";
+            summary += `<li><strong>${label}</strong>: ${value}</li>`;
+        }
     });
-    summary += "</ul>";
 
+    const files = uploadedFiles[faseId];
+    if (files && files.length > 0) {
+        summary += `<li><strong>Vedhæftede filer:</strong><div class='file-link-list'>`;
+        files.forEach(file => {
+            const url = URL.createObjectURL(file);
+            summary += `<a href="${url}" target="_blank">${file.name}</a><br>`;
+        });
+        summary += `</div></li>`;
+    }
+
+    summary += "</ul>";
     container.innerHTML = summary;
     document.getElementById("summaryModal").style.display = "flex";
 }
 
+// Startside
 goToFase("fase1");
