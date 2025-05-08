@@ -30,7 +30,8 @@ form {
 }
 
 .internal-header h2 {
-    color: #003366;
+    color: var(--evida-dark);
+    /* #1F7A4C */
     margin: 0;
 }
 
@@ -144,6 +145,7 @@ button:hover {
     width: 22px;
     height: 22px;
     background-color: #ccc;
+    /* Standard grå */
     border-radius: 50%;
     position: absolute;
     top: -18px;
@@ -229,7 +231,8 @@ input[type="file"] {
 }
 
 input[type="file"]::file-selector-button {
-    background-color: #00778c;
+    background-color: var(--evida-dark);
+    /* #1F7A4C */
     color: white;
     border: none;
     padding: 8px 12px;
@@ -300,7 +303,7 @@ input[type="file"]::file-selector-button:hover {
     text-align: left;
     font-size: 0.9rem;
     cursor: pointer;
-    color: #333;
+    color: #75ec0d;
 }
 
 .menu button:hover {
@@ -309,4 +312,329 @@ input[type="file"]::file-selector-button:hover {
 
 .menu.show {
     display: block;
+}
+
+.choice-container {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.choice-box {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    flex: 1 1 250px;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background: #f9f9f9;
+}
+
+.choice-box:hover {
+    border-color: #00778c;
+    box-shadow: 0 0 8px rgba(0, 119, 140, 0.2);
+}
+
+.choice-box.selected {
+    border-color: #00778c;
+    background: #eef8f9;
+}
+
+.modal-content.large {
+    max-width: 850px;
+    text-align: left;
+}
+
+.tag {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tag-single {
+    background-color: #005e70;
+}
+
+.tag-phased {
+    background-color: #2e7d32;
+}
+
+.option-grid {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.option-box {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.option-box:hover {
+    border-color: #00778c;
+    background: #eef6f8;
+}
+
+.option-box input[type="radio"] {
+    float: right;
+    transform: scale(1.4);
+}
+
+.option-box h4 {
+    margin-top: 10px;
+    color: #003366;
+}
+
+.option-box ul {
+    margin-top: 10px;
+    padding-left: 20px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+#startScreen button:hover {
+    background-color: #005e70;
+}
+
+
+:root {
+    --evida-dark: #1F7A4C;
+    --evida-mid: #3AB87F;
+    --evida-light: #A0D9A1;
+}
+
+/* Forside */
+#startScreen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: url('evidaLogo2.png') center center / cover no-repeat;
+    position: relative;
+}
+
+#startScreen button {
+    padding: 20px 40px;
+    font-size: 1.4rem;
+    background-color: var(--evida-dark);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#startScreen button:hover {
+    background-color: var(--evida-mid);
+}
+
+/* Knapper */
+.tag-single,
+.tag-phased {
+    background-color: #2e7d32;
+    /* Mørkegrøn */
+}
+
+/* Valgt boks – lysegrøn baggrund */
+.option-box.selected {
+    background-color: rgba(63, 186, 127, 0.1);
+    /* Mellemgrøn med 10% opacitet */
+    border-color: #3AB87F;
+}
+
+/* Fortsæt-knap */
+button {
+    background-color: #5ba65d;
+    /* Mellemgrøn */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 10px 20px;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #4e944f;
+}
+
+#confirmationModal .modal-content {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    border-left: 8px solid var(--evida-dark);
+    /* grøn accent */
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+#confirmationModal h3 {
+    color: var(--evida-dark);
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+}
+
+#confirmationSummary {
+    text-align: left;
+    background-color: #f5fdf7;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #333;
+    border: 1px solid #d6eedd;
+}
+
+#confirmationSummary ul {
+    padding-left: 18px;
+    margin: 0;
+}
+
+#confirmationSummary li {
+    margin-bottom: 8px;
+}
+
+#confirmationModal button {
+    margin-top: 25px;
+    background-color: var(--evida-mid);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#confirmationModal button:hover {
+    background-color: var(--evida-dark);
+}
+
+/* Optional: fade-in effekt */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.confirmation-box {
+    background-color: #f0fdf4;
+    /* blød grøn uden gennemsigtighed */
+    border-left: 6px solid var(--evida-dark);
+    padding: 24px 30px;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    color: #1F2D3D;
+    font-size: 1rem;
+    animation: fadeIn 0.4s ease-in-out;
+    max-width: 600px;
+    margin: auto;
+    text-align: left;
+}
+
+.confirmation-box h3 {
+    color: var(--evida-dark);
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.confirmation-box ul {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.confirmation-box li {
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+
+}
+
+.internal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Titel til venstre, logo til højre */
+    margin-bottom: 20px;
+}
+
+.internal-header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #004466;
+}
+
+.form-logo {
+    height: 40px;
+    /* Tilpas efter behov */
+    width: auto;
+}
+
+/* sørger for at logo kan placeres relativt til body/form */
+#reportForm,
+#samletRapportForm {
+    position: relative;
+}
+
+/* placér logoet i bunden til højre */
+/* Alle “phase-logo” placeres nederst til højre i deres parent */
+.phase-logo {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: auto;
+    pointer-events: none;
+    opacity: 0.9;
+    z-index: 10;
+}
+
+/* Gør statusform relativ – så .phase-logo kan positioneres inden i */
+#statusReportForm {
+    position: relative;
+}
+
+/* Samme for samlet-rapport formen */
+#samletRapportForm {
+    position: relative;
 }

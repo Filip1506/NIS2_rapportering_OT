@@ -10,7 +10,142 @@
 </head>
 
 <body>
-    <form id="reportForm">
+
+
+    <div id="startScreen">
+        <button onclick="startReporting()">Start indberetning</button>
+    </div>
+
+    <!-- Startmodal for valg mellem rapporttyper -->
+    <div id="startModal" class="modal" style="display: none;">
+        <div class="modal-content large">
+            <img src="evidaLogo3.png" alt="Evida logo" style="height: 60px; margin-bottom: 20px;">
+            <h3>Indberet sikkerhedshændelse - NIS2 Hændelsesrapportering</h3>
+
+            <div class="option-grid">
+                <!-- Samlet rapport -->
+                <label class="option-box" id="choice-samlet" onclick="selectReportType('samlet')">
+                    <input type="radio" name="reportType" value="samlet" />
+                    <div class="tag tag-single">SAMLET RAPPORT</div>
+                    <h4>Hændelsen er afsluttet</h4>
+                    <p>Vælg denne mulighed, hvis hændelsen er <strong>afsluttet</strong>, og alle væsentlige oplysninger
+                        er tilgængelige.</p>
+                    <ul>
+                        <li>Rapporten udfyldes <strong>fuldt ud én gang</strong></li>
+                        <li>Bruges typisk ved <strong>kortvarige hændelser</strong></li>
+                        <li>Kræver <strong>afsluttende vurdering</strong> og dokumentation</li>
+                    </ul>
+                </label>
+
+                <!-- Faseopdelt rapport -->
+                <label class="option-box" id="choice-fase" onclick="selectReportType('fase')">
+                    <input type="radio" name="reportType" value="fase" />
+                    <div class="tag tag-phased">FASEOPDELT RAPPORTERING</div>
+                    <h4>Hændelsen er igangværende</h4>
+                    <p>Vælg denne mulighed, hvis hændelsen stadig er i gang eller der mangler oplysninger.</p>
+                    <ul>
+                        <li>Tre faser: <strong>hurtig rapport, detaljeret rapport, endelig rapport</strong></li>
+                        <li>Bruges ved <strong>igangværende eller komplekse hændelser</strong></li>
+                        <li>Mulighed for <strong>løbende opdatering</strong> og tilføjelser</li>
+                    </ul>
+                </label>
+            </div>
+
+            <div style="text-align: right; margin-top: 8px;">
+                <button id="startConfirmBtn" onclick="confirmStartChoice()" disabled>Fortsæt</button>
+            </div>
+
+            <p class="infotext">
+                For mere information vedr. hændelsesrapportering.
+                Læs mere hos <a href="https://samsik.dk/nis2" target="_blank">samsik.dk/nis2</a>.
+            </p>
+        </div>
+    </div>
+    <!-- Samlet rapport-formular (skjult fra start) -->
+    <form id="samletRapportForm" style="display:none">
+        <fieldset>
+            <legend>Samlet rapport</legend>
+
+            <label for="samlet-responsible">Navn på rapporteringsansvarlig</label>
+            <input id="samlet-responsible" type="text">
+
+            <label for="samlet-discovery_time">Tidspunkt for opdagelse</label>
+            <input id="samlet-discovery_time" type="text" class="datetimepicker">
+
+            <label for="samlet-description">Kort beskrivelse af hændelsen</label>
+            <textarea id="samlet-description"></textarea>
+
+            <label for="samlet-intent">Mulig forsætlighed</label>
+            <select id="samlet-intent">
+                <option>Ukendt</option>
+                <option>Ja</option>
+                <option>Nej</option>
+            </select>
+
+            <label for="samlet-spread">Risiko for spredning</label>
+            <select id="samlet-spread">
+                <option>Ukendt</option>
+                <option>Ja</option>
+                <option>Nej</option>
+            </select>
+
+            <label for="samlet-start">Start tidspunkt</label>
+            <input id="samlet-start" type="text" class="datetimepicker">
+
+            <label for="samlet-slut">Slut tidspunkt</label>
+            <input id="samlet-slut" type="text" class="datetimepicker">
+
+            <label for="samlet-systems">Systemer eller tjenester</label>
+            <input id="samlet-systems" type="text">
+
+            <label for="samlet-technical">Teknisk årsag</label>
+            <input id="samlet-technical" type="text">
+
+            <label for="samlet-mitigations">Afhjælpende tiltag</label>
+            <textarea id="samlet-mitigations"></textarea>
+
+            <label for="samlet-final_evaluation">Afsluttende vurdering</label>
+            <textarea id="samlet-final_evaluation"></textarea>
+
+            <label for="samlet-consequences">Varige konsekvenser</label>
+            <textarea id="samlet-consequences"></textarea>
+
+            <label for="samlet-followup">Opfølgning</label>
+            <textarea id="samlet-followup"></textarea>
+
+            <label for="samlet-attachment">Vedhæft dokumentation</label>
+            <input id="samlet-attachment" type="file" multiple>
+            <div id="fileList-samlet" class="file-preview"></div>
+
+            <button type="button" onclick="confirmSamletReport()">Indsend samlet rapport</button>
+
+
+            <!-- Knappen, der viser kvittering bagefter -->
+            <button id="viewSamletSummaryBtn" type="button" style="display:none; margin-top: 10px;"
+                onclick="showSummaryIfSubmitted('samlet')">
+                Vis kvittering
+            </button>
+        </fieldset>
+    </form>
+
+    <script>
+        function confirmStartChoice() {
+            const selected = document.querySelector('input[name="reportType"]:checked');
+            if (!selected) return;
+
+            document.getElementById("startModal").style.display = "none";
+
+            if (selected.value === "samlet") {
+                document.getElementById("samletRapportForm").style.display = "block";
+            } else {
+                document.getElementById("reportForm").style.display = "block";
+                goToFase("fase1"); // Starter faseflow
+            }
+        }
+    </script>
+
+
+    <form id="reportForm" style="display:none">
         <div class="internal-header">
             <h2>NIS2 Hændelsesrapportering</h2>
             <div>
@@ -30,6 +165,14 @@
                 <h3>Fase 2</h3>
                 <p>Detaljeret rapport<br>(72 timer efter)</p>
             </div>
+
+            <!-- HER skubber vi Statusrapport IND mellem Fase 2 og Fase 3 -->
+            <div class="timeline-step" onclick="showSummaryIfSubmitted('status')">
+                <div class="dot" id="dot-status"></div>
+                <h3>Statusrapport</h3>
+                <p>Løbende opdatering</p>
+            </div>
+
             <div class="timeline-step" onclick="showSummaryIfSubmitted('fase3')">
                 <div class="dot" id="dot3"></div>
                 <h3>Fase 3</h3>
@@ -67,16 +210,18 @@
             <input type="file" id="attachment1" name="attachment1" multiple>
             <div id="fileList-fase1" class="file-preview"></div>
 
-            <button type="button" onclick="confirmSubmission('fase1')">Indsend Fase 1</button>
+            <button type="button" onclick="confirmSubmission('fase1')">Indsend Tidlig Rapport</button>
         </fieldset>
 
         <!-- Fase 2 -->
         <fieldset id="fase2" style="display:none">
             <legend>Fase 2: Detaljeret rapport <span id="showDeadline72" class="deadline-note"></span></legend>
 
-            <label>Start og slut tidspunkt</label>
-            <input type="text" class="datetimepicker" placeholder="Start">
-            <input type="text" class="datetimepicker" placeholder="Slut">
+            <label>Start tidspunkt</label>
+            <input type="text" id="fase2-start" class="datetimepicker" placeholder="Start">
+
+            <label>Slut tidspunkt</label>
+            <input type="text" id="fase2-slut" class="datetimepicker" placeholder="Slut">
 
             <label>Systemer eller tjenester</label>
             <input type="text">
@@ -91,7 +236,7 @@
             <input type="file" id="attachment2" name="attachment2" multiple>
             <div id="fileList-fase2" class="file-preview"></div>
 
-            <button type="button" onclick="confirmSubmission('fase2')">Indsend Fase 2</button>
+            <button type="button" onclick="confirmSubmission('fase2')">Indsend Detaljeret Rapport</button>
         </fieldset>
 
         <!-- Fase 3 -->
@@ -111,12 +256,12 @@
             <input type="file" id="attachment3" name="attachment3" multiple>
             <div id="fileList-fase3" class="file-preview"></div>
 
-            <button type="button" onclick="confirmSubmission('fase3')">Indsend Fase 3</button>
+            <button type="button" onclick="confirmSubmission('fase3')">Indsend Endelig Rapport</button>
         </fieldset>
     </form>
 
     <div id="confirmationModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content confirmation-box">
             <h3>Bekræft indsendelse</h3>
             <div id="confirmationSummary"></div>
             <button onclick="submitFase()">Bekræft og indsend</button>
@@ -125,15 +270,84 @@
     </div>
 
     <div id="summaryModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content confirmation-box">
+            <h3>Indsendt information</h3>
             <div id="summaryContent"></div>
             <button onclick="closeSummaryModal()">Luk</button>
         </div>
     </div>
 
+    <!-- Statusrapport-formular (skjult indtil fase 3-dialog vælger statusrapport) -->
+    <form id="statusReportForm" style="display:none">
+        <fieldset>
+            <legend>Statusrapport (løbende opdatering)</legend>
+
+            <label for="status-report-time">Rapportdato og -tidspunkt</label>
+            <input type="text" id="status-report-time" class="datetimepicker" placeholder="Vælg dato og tid">
+
+            <label for="status-impact">Aktuelt omfang</label>
+            <textarea id="status-impact" placeholder="Beskriv nuværende påvirkning"></textarea>
+
+            <label for="status-systems">Påvirkede systemer eller tjenesters status</label>
+            <textarea id="status-systems" placeholder="Opdaterede systemlister"></textarea>
+
+            <label for="status-mitigations">Foreløbige afhjælpende tiltag</label>
+            <textarea id="status-mitigations" placeholder="Hvad er gjort indtil nu?"></textarea>
+
+            <label for="status-next-update">Forventet næste opdatering</label>
+            <input type="text" id="status-next-update" class="datetimepicker" placeholder="Dato og tidspunkt">
+
+            <button type="button" onclick="submitStatusReport()">Indsend statusrapport</button>
+        </fieldset>
+    </form>
+
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/da.js"></script>
     <script src="script.js"></script>
+
+
+    <!-- Fase-3 valgmodal -->
+    <div id="phase3Modal" class="modal" style="display: none;">
+        <div class="modal-content large">
+            <div class="option-grid">
+                <!-- Endelig rapport -->
+                <label class="option-box" id="choice-endelig" onclick="selectPhase3Option('endelig')">
+                    <input type="radio" name="phase3Type" value="endelig" />
+                    <div class="tag tag-single">ENDELIG RAPPORT</div>
+                    <h4>Hændelsen er afsluttet</h4>
+                    <p>
+                        Vælg denne mulighed, hvis hændelsen er fuldt afsluttet, og alle væsentlige oplysninger er
+                        tilgængelige.
+                    </p>
+                    <ul>
+                        <li>Endelig vurdering af hændelsen</li>
+                        <li>Dokumentation af årsag og afhjælpende tiltag</li>
+                        <li>Varige konsekvenser og opfølgning</li>
+                    </ul>
+                </label>
+
+                <!-- Statusrapport -->
+                <label class="option-box" id="choice-status" onclick="selectPhase3Option('status')">
+                    <input type="radio" name="phase3Type" value="status" />
+                    <div class="tag tag-phased">STATUSRAPPORT</div>
+                    <h4>Hændelsen er stadig i gang</h4>
+                    <p>
+                        Vælg denne mulighed, hvis hændelsen endnu ikke er afsluttet, og du har brug for at sende en
+                        løbende statusrapport.
+                    </p>
+                    <ul>
+                        <li>Aktuelt omfang</li>
+                        <li>Foreløbige afhjælpende tiltag</li>
+                        <li>Forventet næste opdateringstidspunkt</li>
+                    </ul>
+                </label>
+            </div>
+
+            <div style="text-align: right; margin-top: 1rem;">
+                <button id="phase3ConfirmBtn" onclick="confirmPhase3Choice()" disabled>Fortsæt</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
