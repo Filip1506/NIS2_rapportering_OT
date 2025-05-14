@@ -420,14 +420,20 @@ input[type="file"]::file-selector-button:hover {
     --evida-light: #A0D9A1;
 }
 
-/* Forside */
 #startScreen {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background: url('evidaLogo2.png') center center / cover no-repeat;
-    position: relative;
+    padding-top: 40px;
+    /* afstand fra top */
+    background: #f2f4f8;
+}
+
+.hero-img {
+    max-width: 80%;
+    height: auto;
+    margin-bottom: 40px;
+    /* afstand til knappen */
 }
 
 #startScreen button {
