@@ -193,19 +193,35 @@
             <label for="description">Kort beskrivelse af hændelsen</label>
             <textarea id="description" placeholder="Hvad er sket?"></textarea>
 
-            <label for="intent">Mulig forsætlighed</label>
-            <select id="intent">
-                <option>Ukendt</option>
-                <option>Ja</option>
-                <option>Nej</option>
-            </select>
+            <!-- Forsætlighed -->
+            <div class="tooltip-field">
+                <label for="intent">Mulig forsætlighed</label>
+                <select id="intent">
+                    <option>Ukendt</option>
+                    <option>Ja</option>
+                    <option>Nej</option>
+                </select>
+                <span class="tooltip-icon" tabindex="0">?</span>
+                <div class="tooltip-text">
+                    Vælg ‘Ja’ hvis du vurderer, at hændelsen er resultatet af en bevidst handling eller ondsindet
+                    indgriben – ikke et utilsigtet fejltrin.
+                </div>
+            </div>
 
-            <label for="spread">Er der risiko for spredning?</label>
-            <select id="spread">
-                <option>Ukendt</option>
-                <option>Ja</option>
-                <option>Nej</option>
-            </select>
+            <!-- Spredning -->
+            <div class="tooltip-field">
+                <label for="spread">Er der risiko for spredning?</label>
+                <select id="spread">
+                    <option>Ukendt</option>
+                    <option>Ja</option>
+                    <option>Nej</option>
+                </select>
+                <span class="tooltip-icon" tabindex="0">?</span>
+                <div class="tooltip-text">
+                    Vælg ‘Ja’ hvis hændelsen kan medføre videre påvirkning af andre systemer, netværk eller lokationer,
+                    fx ved at malware eller fejl udbreder sig.
+                </div>
+            </div>
 
             <label for="attachment1">Vedhæft dokumentation</label>
             <input type="file" id="attachment1" name="attachment1" multiple>

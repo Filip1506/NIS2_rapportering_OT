@@ -640,7 +640,70 @@ button:hover {
     position: relative;
 }
 
-/* Samme for samlet-rapport formen */
-#samletRapportForm {
+.tooltip-field select {
+    width: 30%;
+    box-sizing: border-box;
+    padding-right: 2.5em;
+    /* behold gerne til ikonet */
+}
+
+/* Wrapper for label+select+icon */
+.tooltip-field {
     position: relative;
+    margin-top: 1rem;
+}
+
+/* Ikonet */
+.tooltip-icon {
+    display: inline-block;
+    margin-left: 8px;
+    background: #00778c;
+    color: white;
+    width: 1.2em;
+    height: 1.2em;
+    line-height: 1.2em;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    cursor: default;
+}
+
+/* Den skjulte tooltip-tekst */
+.tooltip-text {
+    position: absolute;
+    bottom: 100%;
+    /* Placer lige over ikonet */
+    left: 33%;
+    transform: translateX(-50%);
+    width: 180px;
+    /* Tilpas efter behov */
+    background: #333;
+    color: #fff;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    text-align: left;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    /* Sikrer kun hover via ikonet */
+}
+
+/* Pil under tooltip */
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #333;
+}
+
+/* Vis tooltip kun når ikonet er hovered/focused */
+.tooltip-icon:hover+.tooltip-text,
+.tooltip-icon:focus+.tooltip-text {
+    visibility: visible;
+    opacity: 1;
 }
