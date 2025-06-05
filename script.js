@@ -1,4 +1,4 @@
-// NIS2 rapportering - forbedret file preview med burger-menu der bevares efter klik
+// NIS2-rapportering - forbedret file preview med burger-menu der bevares efter klik
 
 let currentFase = "fase1";
 let submitted = { fase1: false, fase2: false, status: false, fase3: false, samlet: false };
